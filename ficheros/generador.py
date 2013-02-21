@@ -8,7 +8,6 @@ Created on 10/12/2012
 class Generador(object):
 
     def __init__(self, pFichero, pAlfabeto, pLonMin, pLonMax, pInicializar):
-        self.combinaciones = []
         self.fichero = str(pFichero)
         self.alfabeto = pAlfabeto
         self.lonMin = int(pLonMin)
@@ -26,11 +25,10 @@ class Generador(object):
         if (len(siguientePalabra) <= self.lonMax):
             diccionario = open(self.fichero,"w")
             for i in range(self.lonMin,self.lonMax+1):
-                self.getCombinacion(diccionario, self.combinaciones, self.alfabeto, i, siguientePalabra)
+                self.getCombinacion(diccionario, self.alfabeto, i, siguientePalabra)
             diccionario.close()
         else:
             print "La siguiente palabra a la palabra semilla (" + ''.join(self.inicializar) + ") está fuera del rango."
-        return self.combinaciones
     
     def primeraPalabra(self, palabra):
         lista = []
@@ -57,26 +55,19 @@ class Generador(object):
             nuevaPalabra = palabra
         return nuevaPalabra
     
-    def getCombinacion(self, diccionario, combinaciones, alfabeto, longitud, inicializar = [], palabra = ''):
+    def getCombinacion(self, diccionario, alfabeto, longitud, inicializar = [], palabra = ''):
         if (longitud > 0):
             aux = inicializar.pop() if (len(inicializar) > 0) else "-"
             for letra in alfabeto:
                 if (aux == "-"):
-                    combinacion = self.getCombinacion(diccionario, combinaciones, alfabeto, longitud-1, inicializar, palabra + letra)
-                    if (combinacion):
-                        diccionario.write(combinacion + "\r\n")
-                        combinaciones.append(combinacion)
-                        print "Palabras generadas: " + str(len(combinaciones)) + " Actual: " + combinacion
+                    self.getCombinacion(diccionario, alfabeto, longitud-1, inicializar, palabra + letra)                     
                 else:
                     if (letra == aux):
                         aux = "-"
-                        combinacion = self.getCombinacion(diccionario, combinaciones, alfabeto, longitud-1, inicializar, palabra + letra)
-                        if (combinacion):
-                            diccionario.write(combinacion + "\r\n")
-                            combinaciones.append(combinacion)
-                            print "Palabras generadas: " + str(len(combinaciones)) + " Actual: " + combinacion
+                        self.getCombinacion(diccionario, alfabeto, longitud-1, inicializar, palabra + letra)
         else:
-            return palabra
+            diccionario.write(palabra + "\r\n")
+            print " Actual: " + palabra
 
         ''' Funcion encargada de obtener todas las posibles permutaciones sin repeticion dado un alfabeto '''
         ''' Postcondicion: Devuelve un array con las permutaciones sin repeticion posibles. En caso de '''
