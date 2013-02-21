@@ -67,7 +67,7 @@ class Generador(object):
                         aux = "-"
                         self.getCombinacion(diccionario, combinaciones, alfabeto, longitud-1, aux, palabra + letra)
         else:
-            diccionario.write(palabra)
+            diccionario.write(palabra + "\")
             print "Actual:" + palabra
 
         ''' Funcion encargada de obtener todas las posibles permutaciones sin repeticion dado un alfabeto '''
