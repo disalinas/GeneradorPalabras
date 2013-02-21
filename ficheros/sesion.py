@@ -17,13 +17,10 @@ class Sesion(object):
         
     def comprobacionArgumentos(self, argumentos):
         estado = True
-    
-        if (len(argumentos) < 3):
-            estado = False
-            print "Faltan argumentos"        
         
-        for i in range(0, len(argumentos)-1):
+        for i in range(0, len(argumentos)):
             argumento = argumentos[i].replace("-","").lower()
+            
             if (argumento == "fichero"):
                 self.fichero = argumentos[i+1]
                 self.obligatorio -= 1
@@ -37,10 +34,12 @@ class Sesion(object):
                 self.desde = argumentos[i+1]
             elif (argumento == "help"):
                 self.mostrarInformacion()
+                return False   
         
         if (self.obligatorio > 0):
             estado = False
             print "Faltan argumentos obligatorios"
+            self.mostrarInformacion()
         return estado
     
     def mostrarInformacion(self):
